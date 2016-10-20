@@ -1,7 +1,7 @@
 .DEFAULT_GOAL := dist/SHA512SUM
 .PHONY: clean test
 
-ACBUILD_VERSION=0.3.1
+ACBUILD_VERSION=0.4.0
 RKT_VERSION=1.17.0
 ACBUILD=build/acbuild
 RKT=build/rkt/rkt
