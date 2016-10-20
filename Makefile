@@ -6,7 +6,7 @@ RKT_VERSION=1.17.0
 ACBUILD=build/acbuild
 RKT=build/rkt/rkt
 
-dist/SHA512SUM: dist/dit4c-helper-upload-webdav.linux.linux.amd64.aci
+dist/SHA512SUM: dist/dit4c-helper-upload-webdav.linux.amd64.aci
 	sha512sum $^ | sed -e 's/dist\///' > $@
 
 dist/dit4c-helper-upload-webdav.linux.amd64.aci: build/acbuild build/client-base.aci build/jwt *.sh | dist
