@@ -17,3 +17,12 @@ teardown() {
   [ "$status" -eq 0 ]
   [ $(expr "${output}" : ".*Protocols: .*https.*") -ne 0 ]
 }
+
+@test "GPG 2.x is installed" {
+  run sudo $RKT run --insecure-options=image --stage1-path=$RKT_STAGE1 \
+    $IMAGE \
+    --exec /usr/bin/gpg2 -- --version
+  echo $output
+  [ "$status" -eq 0 ]
+  [ $(expr "${output}" : ".*gpg (GnuPG) 2\..*") -ne 0 ]
+}

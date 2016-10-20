@@ -42,7 +42,7 @@ build/client-base.aci: $(RKT)
 		--dns=8.8.8.8 \
 		docker://alpine:edge \
 		--exec /bin/sh -- -c \
-		"apk add --update bind-tools nmap curl && adduser -D listener && rm -rf /var/cache/apk/*"
+		"apk add --update gnupg curl && rm -rf /var/cache/apk/*"
 	sudo $(RKT) --dir=$(RKT_TMPDIR) export --overwrite `cat $(RKT_UUID_FILE)` $@
 	sudo chown $(shell id -nu) $@
 	sudo $(RKT) --dir=$(RKT_TMPDIR) gc --grace-period=0s
