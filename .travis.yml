@@ -1,0 +1,13 @@
+sudo: required
+dist: trusty
+language: generic
+script: make && make test
+deploy:
+  provider: releases
+  file:
+    - dist/dit4c-helper-upload-webdav.linux.amd64.aci
+    - dist/SHA512SUM
+  skip_cleanup: true
+  on:
+    tags: true
+    repo: dit4c/dit4c-helper-upload-webdav
