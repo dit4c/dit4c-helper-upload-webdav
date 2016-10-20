@@ -4,6 +4,8 @@ language: generic
 script: make && make test
 deploy:
   provider: releases
+  api_key:
+    secure: Eb+0GC0pGWQ4JfyMhJauLaoZ8Lycr9p95eRF9/JcBAXPn6Eo69JV+ybakRzKm1sGV9QpA+OzMFfNgRsY1zqGhgk8kBbAqT+Q+BxZDw+UGKKxA4Mgwv4Y/8O72pxcZqaIPkS8desYC0Z6bG1JYKdBIpIFZk9le9w7wIOt11xFmIljHWVe0qP4O6ksJSrhdOGxr1RTlty5Okhb8aqVgIQE7mc56npSl2CqRX7PmpADSLszSNZnXYIkTytY4n+70Nax9wPb/5xPULCwtSdJWFUxjah2aHa/W51mzT/KtHZvcfiKU4jmeybsijMRi3wrVOm1P/qbKE6XQPSLAEh+JFPdMfhG4qxObhbLTyHHJ9TDdT1ELf1g74dY+2VH+ZYm3wH0TLYNOTn/qql3y/798/+ZvhhavPvtx19gkk/HwHBgzp2PV3vfp0iQeScIszby0cXZzrieBypNERZrRI7VwTAng2gSYCrJUSDGm5IFablbRnxYz+w4Bw5DcbTYu3Z8+4cX1r57SLehRDDs7V/nu+f8l/3aSUEJgzCjLO2CxepEJBDr2gJTio43mjHjuXLp+mG3+TaSbP6RTkI72bOElaIjGw+jwceCy/A9vKlUc2gW7sH5+KuJzXfwscD5gLbTTCEHMpd3XcaofMm5Hh9fK2ntPvMd3+kcvfPvwSiQOT/8kkI=
   file:
     - dist/dit4c-helper-upload-webdav.linux.amd64.aci
     - dist/SHA512SUM
