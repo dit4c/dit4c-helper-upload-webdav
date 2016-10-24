@@ -26,7 +26,6 @@ dist/dit4c-helper-upload-webdav.linux.amd64.aci: build/acbuild build/client-base
 	sudo $(ACBUILD) copy run.sh /opt/bin/run.sh
 	sudo $(ACBUILD) set-name dit4c-helper-upload-webdav
 	sudo $(ACBUILD) set-exec -- /opt/bin/run.sh
-	sudo $(ACBUILD) environment add HOME "/home/listener"
 	sudo $(ACBUILD) write --overwrite $@
 	sudo $(ACBUILD) end
 	sudo chown $(shell id -nu) $@
