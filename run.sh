@@ -6,7 +6,6 @@ if [[ ! -f "$DIT4C_IMAGE" ]]; then
   echo "Unable to find DIT4C_IMAGE: $DIT4C_IMAGE"
   exit 1
 fi
-gpg2 --batch --yes --import $DIT4C_IMAGE
 
 if [[ "$DIT4C_IMAGE_ID" == "" ]]; then
   echo "Must specify DIT4C_IMAGE_ID for image"
@@ -32,6 +31,7 @@ if [[ ! -f "$DIT4C_INSTANCE_PRIVATE_KEY_OPENPGP" ]]; then
   echo "Unable to find DIT4C_INSTANCE_PRIVATE_KEY_OPENPGP: $DIT4C_INSTANCE_PRIVATE_KEY_OPENPGP"
   exit 1
 fi
+gpg2 --batch --yes --import $DIT4C_INSTANCE_PRIVATE_KEY_OPENPGP
 
 if [[ "$DIT4C_INSTANCE_PRIVATE_KEY_OPENPGP_PASSPHRASE" == "" ]]; then
   echo "Must specify DIT4C_INSTANCE_PRIVATE_KEY_OPENPGP_PASSPHRASE to decrypt key"
