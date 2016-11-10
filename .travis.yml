@@ -2,14 +2,24 @@ sudo: required
 dist: trusty
 language: generic
 script: make && make test
+after_success:
+- make deploy
 deploy:
-  provider: releases
+- provider: releases
   api_key:
     secure: Eb+0GC0pGWQ4JfyMhJauLaoZ8Lycr9p95eRF9/JcBAXPn6Eo69JV+ybakRzKm1sGV9QpA+OzMFfNgRsY1zqGhgk8kBbAqT+Q+BxZDw+UGKKxA4Mgwv4Y/8O72pxcZqaIPkS8desYC0Z6bG1JYKdBIpIFZk9le9w7wIOt11xFmIljHWVe0qP4O6ksJSrhdOGxr1RTlty5Okhb8aqVgIQE7mc56npSl2CqRX7PmpADSLszSNZnXYIkTytY4n+70Nax9wPb/5xPULCwtSdJWFUxjah2aHa/W51mzT/KtHZvcfiKU4jmeybsijMRi3wrVOm1P/qbKE6XQPSLAEh+JFPdMfhG4qxObhbLTyHHJ9TDdT1ELf1g74dY+2VH+ZYm3wH0TLYNOTn/qql3y/798/+ZvhhavPvtx19gkk/HwHBgzp2PV3vfp0iQeScIszby0cXZzrieBypNERZrRI7VwTAng2gSYCrJUSDGm5IFablbRnxYz+w4Bw5DcbTYu3Z8+4cX1r57SLehRDDs7V/nu+f8l/3aSUEJgzCjLO2CxepEJBDr2gJTio43mjHjuXLp+mG3+TaSbP6RTkI72bOElaIjGw+jwceCy/A9vKlUc2gW7sH5+KuJzXfwscD5gLbTTCEHMpd3XcaofMm5Hh9fK2ntPvMd3+kcvfPvwSiQOT/8kkI=
   file:
-    - dist/dit4c-helper-upload-webdav.linux.amd64.aci
-    - dist/SHA512SUM
+  - dist/dit4c-helper-upload-webdav.linux.amd64.aci
+  - dist/SHA512SUM
   skip_cleanup: true
   on:
     tags: true
+    repo: dit4c/dit4c-helper-upload-webdav
+- provider: bintray
+  file: dist/bintray-descriptor.json
+  user: tjdett
+  key:
+    secure: KeBPGX1cbguMKUUCFQHMuuw+QL2cUzQhqPZdYJaf/MFliZUK+BBgBXFvGRYRzClw3SClp1fV2YOcNRUu7TrLEiynK5A6P9Pdpmx3bwYHSg0ArwXngpGPTPNVxqVuYcBjZf/QUxWdHN0/9mlVNpPc5376BNIoHK29jA7/w3JwkaovYmhiaOQ1i3FKMwKp6hBsGvBS2jbkNe5+A1bRePe2bnbU712uhVF+jDLfg0kpEUd/i5MYTvarUMvI+VOMKo1Kk9sQz0XOLUuPugZmlbgbWZxTOm3MhQFVaYhkn56iiAIOZQGLJ3tmM2LoMR8l8M11Ig0ROi8/Pc/DOeDu0cQyjrSswJ9J26QV4C07Vc+IWP+mfuq22jHtMxmkWIaIH7KdrecRvdeXzPZMyFzd33AkdFJrOzN8kP5ithqp1GZjhB83k+zno3qAWpyRrm+LiL9IyWMN9GAh3qmsCoPsA0ZvZtWJExu4uENa7zlFF20OZYWOz/0CeJ9mfSY5nEheJJ0o1rexAYkowUCXIkTcYbMvIV11oP2A/sIcWAMu69cbmJXU3Spfc9aF9qVIg2oc5nq9pXzOf+8+n3BaY8vVhQCu2UHpu41QjHO2Rzo8knmhOpFjJeyEG0DNt3wzeaIJlOVjdx5U9hDSWkYQv1n4FU8oKEUp8tI6XU2pHFWn1Qx8XSU=
+  skip_cleanup: true
+  on:
     repo: dit4c/dit4c-helper-upload-webdav

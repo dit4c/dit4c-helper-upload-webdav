@@ -1,13 +1,40 @@
 .DEFAULT_GOAL := dist/SHA512SUM
-.PHONY: clean test
+.PHONY: clean test deploy
 
+VERSION=$(shell git describe --dirty --tags)
 ACBUILD_VERSION=0.4.0
 RKT_VERSION=1.17.0
 ACBUILD=build/acbuild
 RKT=build/rkt/rkt
 
+define BINTRAY_DESCRIPTOR_JSON
+{
+	"package": {
+		"name": "dit4c-helper-upload-webdav",
+		"repo": "releases",
+		"subject": "dit4c",
+		"vcs_url": "https://github.com/dit4c/dit4c-helper-upload-webdav.git",
+		"licenses": ["MIT"],
+		"public_download_numbers": false,
+		"public_stats": false
+	},
+	"version": {
+		"name": "$(VERSION)",
+		"vcs_tag": "$(VERSION)"
+	},
+	"files": [
+		{"includePattern": "build/(.*\.aci)", "uploadPattern": "$$1"}
+	],
+	"publish": true
+}
+endef
+export BINTRAY_DESCRIPTOR_JSON
+
 dist/SHA512SUM: dist/dit4c-helper-upload-webdav.linux.amd64.aci
 	sha512sum $^ | sed -e 's/dist\///' > $@
+
+dist/bintray-descriptor.json:
+	@echo "$$BINTRAY_DESCRIPTOR_JSON" > $@
 
 dist/dit4c-helper-upload-webdav.linux.amd64.aci: build/acbuild build/client-base.aci build/jwt *.sh | dist
 	rm -rf .acbuild
@@ -80,3 +107,5 @@ test: build/bats $(RKT) dist/dit4c-helper-upload-webdav.linux.amd64.aci
 
 clean:
 	-rm -rf build .acbuild dist
+
+deploy: dist/bintray-descriptor.json
