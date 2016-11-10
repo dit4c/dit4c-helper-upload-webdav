@@ -1,6 +1,7 @@
 .DEFAULT_GOAL := dist/SHA512SUM
 .PHONY: clean test deploy
 
+NAME=dit4c-helper-upload-webdav
 VERSION=$(shell git describe --dirty --tags)
 ACBUILD_VERSION=0.4.0
 RKT_VERSION=1.17.0
@@ -10,7 +11,7 @@ RKT=build/rkt/rkt
 define BINTRAY_DESCRIPTOR_JSON
 {
 	"package": {
-		"name": "dit4c-helper-upload-webdav",
+		"name": "$(NAME)",
 		"repo": "releases",
 		"subject": "dit4c"
 	},
@@ -22,20 +23,20 @@ define BINTRAY_DESCRIPTOR_JSON
 		"gpgSign": true
 	},
 	"files": [
-		{"includePattern": "dist/(.*\\.aci)", "uploadPattern": "$$1"}
+		{"includePattern": "dist/(.*\\.aci)", "uploadPattern": "$(NAME)/$(VERSION)/$$1"}
 	],
 	"publish": true
 }
 endef
 export BINTRAY_DESCRIPTOR_JSON
 
-dist/SHA512SUM: dist/dit4c-helper-upload-webdav.linux.amd64.aci
+dist/SHA512SUM: dist/$(NAME).linux.amd64.aci
 	sha512sum $^ | sed -e 's/dist\///' > $@
 
 dist/bintray-descriptor.json:
 	@echo "$$BINTRAY_DESCRIPTOR_JSON" > $@
 
-dist/dit4c-helper-upload-webdav.linux.amd64.aci: build/acbuild build/client-base.aci build/jwt *.sh | dist
+dist/$(NAME).linux.amd64.aci: build/acbuild build/client-base.aci build/jwt *.sh | dist
 	rm -rf .acbuild
 	sudo -v
 	sudo $(ACBUILD) --debug begin ./build/client-base.aci
@@ -50,7 +51,7 @@ dist/dit4c-helper-upload-webdav.linux.amd64.aci: build/acbuild build/client-base
 	sudo $(ACBUILD) environment add DIT4C_INSTANCE_JWT_ISS ""
 	sudo $(ACBUILD) copy build/jwt /usr/bin/jwt
 	sudo $(ACBUILD) copy run.sh /opt/bin/run.sh
-	sudo $(ACBUILD) set-name dit4c-helper-upload-webdav
+	sudo $(ACBUILD) set-name $(NAME)
 	sudo $(ACBUILD) set-exec -- /opt/bin/run.sh
 	sudo $(ACBUILD) write --overwrite $@
 	sudo $(ACBUILD) end
@@ -101,7 +102,7 @@ $(RKT): | build
 	curl -sL https://github.com/coreos/rkt/releases/download/v${RKT_VERSION}/rkt-v${RKT_VERSION}.tar.gz | tar xz -C build
 	mv build/rkt-v${RKT_VERSION} build/rkt
 
-test: build/bats $(RKT) dist/dit4c-helper-upload-webdav.linux.amd64.aci
+test: build/bats $(RKT) dist/$(NAME).linux.amd64.aci
 	sudo -v && echo "" && build/bats/bin/bats -t test
 
 clean:
