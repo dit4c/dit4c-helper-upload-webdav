@@ -23,7 +23,7 @@ define BINTRAY_DESCRIPTOR_JSON
 		"vcs_tag": "$(VERSION)"
 	},
 	"files": [
-		{"includePattern": "build/(.*\.aci)", "uploadPattern": "$$1"}
+		{"includePattern": "dist/(.*\.aci)", "uploadPattern": "$$1"}
 	],
 	"publish": true
 }
