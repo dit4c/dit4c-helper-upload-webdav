@@ -12,14 +12,12 @@ define BINTRAY_DESCRIPTOR_JSON
 	"package": {
 		"name": "dit4c-helper-upload-webdav",
 		"repo": "releases",
-		"subject": "dit4c",
-		"vcs_url": "https://github.com/dit4c/dit4c-helper-upload-webdav.git",
-		"licenses": ["MIT"],
-		"public_download_numbers": false,
-		"public_stats": false
+		"subject": "dit4c"
 	},
 	"version": {
 		"name": "$(VERSION)",
+		"desc": "",
+		"released": "$(shell date -u +%Y-%m-%d)",
 		"vcs_tag": "$(VERSION)"
 	},
 	"files": [
