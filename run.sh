@@ -67,10 +67,11 @@ for f in "$WORKING_IMAGE" "$WORKING_IMAGE.asc"
 do
   curl -v -X PUT --retry 1000 \
     -H "Authorization: Bearer $TOKEN" \
-    --data-raw @"$f" \
+    --data-binary "@$f" \
     "$DIT4C_IMAGE_SERVER/$DIT4C_IMAGE_ID/$f"
 done
 
+IMAGE_URL="$DIT4C_IMAGE_SERVER/$DIT4C_IMAGE_ID/$WORKING_IMAGE"
 curl -v -X PUT --retry 1000 \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: text/plain; charset=UTF-8" \
