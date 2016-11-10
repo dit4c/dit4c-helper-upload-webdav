@@ -18,10 +18,11 @@ define BINTRAY_DESCRIPTOR_JSON
 		"name": "$(VERSION)",
 		"desc": "",
 		"released": "$(shell date -u +%Y-%m-%d)",
-		"vcs_tag": "$(VERSION)"
+		"vcs_tag": "$(VERSION)",
+		"gpgSign": true
 	},
 	"files": [
-		{"includePattern": "dist/(.*\.aci)", "uploadPattern": "$$1"}
+		{"includePattern": "dist/(.*\\.aci)", "uploadPattern": "$$1"}
 	],
 	"publish": true
 }
