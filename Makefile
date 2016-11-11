@@ -1,37 +1,14 @@
-.DEFAULT_GOAL := dist/SHA512SUM
-.PHONY: clean test deploy
-
 NAME=dit4c-helper-upload-webdav
 VERSION=$(shell git describe --dirty --tags)
+
+.DEFAULT_GOAL := dist/$(NAME).linux.amd64.aci
+.PHONY: clean test deploy
+
 ACBUILD_VERSION=0.4.0
 RKT_VERSION=1.17.0
 ACBUILD=build/acbuild
 RKT=build/rkt/rkt
-
-define BINTRAY_DESCRIPTOR_JSON
-{
-	"package": {
-		"name": "$(NAME)",
-		"repo": "releases",
-		"subject": "dit4c"
-	},
-	"version": {
-		"name": "$(VERSION)",
-		"desc": "",
-		"released": "$(shell date -u +%Y-%m-%d)",
-		"vcs_tag": "$(VERSION)",
-		"gpgSign": true
-	},
-	"files": [
-		{"includePattern": "dist/(.*\\.aci)", "uploadPattern": "$(NAME)/$(VERSION)/$$1"}
-	],
-	"publish": true
-}
-endef
-export BINTRAY_DESCRIPTOR_JSON
-
-dist/SHA512SUM: dist/$(NAME).linux.amd64.aci
-	sha512sum $^ | sed -e 's/dist\///' > $@
+GPG=gpg2
 
 dist/bintray-descriptor.json:
 	@echo "$$BINTRAY_DESCRIPTOR_JSON" > $@
@@ -56,6 +33,13 @@ dist/$(NAME).linux.amd64.aci: build/acbuild build/client-base.aci build/jwt *.sh
 	sudo $(ACBUILD) write --overwrite $@
 	sudo $(ACBUILD) end
 	sudo chown $(shell id -nu) $@
+
+dist/%.aci.asc: dist/%.aci signing.key
+	$(eval TMP_KEYRING := $(shell mktemp -p ./build))
+	$(eval GPG_FLAGS := --batch --no-default-keyring --keyring $(TMP_KEYRING) )
+	$(GPG) $(GPG_FLAGS) --import signing.key
+	$(GPG) $(GPG_FLAGS) --armour --detach-sign $<
+	rm $(TMP_KEYRING)
 
 build dist:
 	mkdir -p $@
@@ -108,4 +92,4 @@ test: build/bats $(RKT) dist/$(NAME).linux.amd64.aci
 clean:
 	-rm -rf build .acbuild dist
 
-deploy: dist/bintray-descriptor.json
+deploy: dist/$(NAME).linux.amd64.aci.asc
