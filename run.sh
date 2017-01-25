@@ -67,6 +67,8 @@ for f in "$WORKING_IMAGE" "$WORKING_IMAGE.asc"
 do
   curl -v -X PUT --retry 1000 \
     -H "Authorization: Bearer $TOKEN" \
+    --fail \
+    --retry-connrefused \
     --data-binary "@$f" \
     "$DIT4C_IMAGE_SERVER/$DIT4C_IMAGE_ID/$f"
 done
