@@ -35,11 +35,13 @@ dist/$(NAME).linux.amd64.aci: build/acbuild build/client-base.aci build/jwt *.sh
 	sudo chown $(shell id -nu) $@
 
 dist/%.aci.asc: dist/%.aci signing.key
-	$(eval TMP_KEYRING := $(shell mktemp -p ./build))
-	$(eval GPG_FLAGS := --batch --no-default-keyring --keyring $(TMP_KEYRING) )
+	$(eval TMP_PUBLIC_KEYRING := $(shell mktemp -p ./build))
+	$(eval TMP_SECRET_KEYRING := $(shell mktemp -p ./build))
+	$(eval GPG_FLAGS := --batch --no-default-keyring --keyring $(TMP_PUBLIC_KEYRING) --secret-keyring $(TMP_SECRET_KEYRING) )
 	$(GPG) $(GPG_FLAGS) --import signing.key
+	rm -f $@
 	$(GPG) $(GPG_FLAGS) --armour --detach-sign $<
-	rm $(TMP_KEYRING)
+	rm $(TMP_PUBLIC_KEYRING) $(TMP_SECRET_KEYRING)
 
 build dist:
 	mkdir -p $@
