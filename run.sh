@@ -65,11 +65,11 @@ echo "$DIT4C_INSTANCE_PRIVATE_KEY_OPENPGP_PASSPHRASE" | \
 
 for f in "$WORKING_IMAGE" "$WORKING_IMAGE.asc"
 do
-  curl -v -X PUT --retry 1000 \
+  curl -v --retry 1000 \
     -H "Authorization: Bearer $TOKEN" \
     --fail \
     --retry-connrefused \
-    --data-binary "@$f" \
+    -T "$f" \
     "$DIT4C_IMAGE_SERVER/$DIT4C_IMAGE_ID/$f"
 done
 
