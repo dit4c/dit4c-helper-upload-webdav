@@ -50,7 +50,7 @@ build/client-base.aci: $(RKT)
 	$(eval RKT_TMPDIR := $(shell mktemp -d -p ./build))
 	$(eval RKT_UUID_FILE := $(shell mktemp -p ./build))
 	sudo -v && sudo $(RKT) --dir=$(RKT_TMPDIR) \
-		run --insecure-options=image --uuid-file-save=$(RKT_UUID_FILE) \
+		run --insecure-options=image,seccomp --uuid-file-save=$(RKT_UUID_FILE) \
 		--dns=8.8.8.8 \
 		docker://alpine:edge \
 		--exec /bin/sh -- -c \
@@ -68,7 +68,7 @@ build/acbuild: | build
 build/jwt: | $(RKT)
 	$(eval RKT_TMPDIR := $(shell mktemp -d -p ./build))
 	sudo -v && sudo $(RKT) --dir=$(RKT_TMPDIR) run \
-		--dns=8.8.8.8 --insecure-options=image \
+		--dns=8.8.8.8 --insecure-options=image,seccomp \
     --volume output-dir,kind=host,source=`pwd`/build \
     docker://golang:alpine \
     --set-env CGO_ENABLED=0 \
